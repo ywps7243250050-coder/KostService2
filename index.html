@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KosService</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f8f6;
+  color: #24352e;
+}
+
+header {
+  background: white;
+  padding: 20px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px #0000000d;
+}
+
+.logo {
+  color: #147d64;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+nav button {
+  border: none;
+  background: none;
+  margin-left: 18px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #34453d;
+}
+
+nav button:hover {
+  color: #147d64;
+}
+
+.container {
+  max-width: 1150px;
+  margin: auto;
+  padding: 30px 20px 100px;
+}
+
+.welcome h1 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.welcome p {
+  color: #718078;
+}
+
+.search {
+  width: 100%;
+  padding: 15px;
+  margin: 25px 0;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  outline-color: #147d64;
+}
+
+.banner {
+  background: linear-gradient(120deg,#147d64,#35a783);
+  color: white;
+  padding: 35px;
+  border-radius: 18px;
+  margin-bottom: 30px;
+}
+
+.banner h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.banner p {
+  margin-bottom: 18px;
+}
+
+.btn {
+  padding: 11px 20px;
+  background: #147d64;
+  color: white;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn:hover {
+  background: #0e5d4a;
+}
+
+.banner .btn {
+  background: white;
+  color: #147d64;
+}
+
+.section {
+  margin-top: 30px;
+}
+
+.section h2 {
+  margin-bottom: 18px;
+}
+
+.categories {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 15px;
+}
+
+.category {
+  padding: 22px 10px;
+  background: white;
+  border-radius: 14px;
+  text-align: center;
+  border: 1px solid #e8eee9;
+  cursor: pointer;
+}
+
+.category:hover {
+  background: #e8f5ef;
+}
+
+.category span {
+  display: block;
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.vendors {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 18px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid #e8eee9;
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+.card p {
+  color: #718078;
+  margin: 8px 0;
+}
+
+.price {
+  color: #147d64 !important;
+  font-weight: bold;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.form-group {
+  margin: 15px 0;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+}
+
+.order {
+  background: white;
+  padding: 18px;
+  margin: 12px 0;
+  border-radius: 12px;
+  border: 1px solid #e8eee9;
+}
+
+.chat-box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  min-height: 200px;
+  margin-bottom: 15px;
+}
+
+.message {
+  background: #e8f5ef;
+  padding: 12px;
+  border-radius: 10px;
+  margin: 10px 0;
+  max-width: 80%;
+}
+
+.message.mine {
+  background: #147d64;
+  color: white;
+  margin-left: auto;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #718078;
+}
+
+@media(max-width:700px) {
+  header {
+    padding: 18px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  nav button {
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .categories {
+    grid-template-columns: repeat(2,1fr);
+  }
+
+  .vendors {
+    grid-template-columns: 1fr;
+  }
+
+  .banner h2 {
+    font-size: 23px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">KosService</div>
+
+  <nav>
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('orders')">Orders</button>
+    <button onclick="showPage('chat')">Chat</button>
+    <button onclick="showPage('profile')">Profile</button>
+  </nav>
+</header>
+
+<div class="container">
+
+<!-- BERANDA -->
+<section id="home" class="page active">
+
+  <div class="welcome">
+    <h1>Halo, <span id="welcomeName">Pengguna</span> 👋</h1>
+    <p>Temukan semua kebutuhan kos kamu di KosService.</p>
+  </div>
+
+  <input
+    type="text"
+    class="search"
+    id="search"
+    placeholder="Cari layanan atau vendor..."
+    oninput="renderVendors()"
+  >
+
+  <div class="banner">
+    <h2>Kebutuhan Kos Lebih Mudah!</h2>
+    <p>Temukan berbagai layanan dengan harga terjangkau.</p>
+    <button class="btn" onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'})">
+      Cari Layanan
+    </button>
+  </div>
+
+  <div class="section" id="categories">
+    <h2>Kategori Layanan</h2>
+
+    <div class="categories">
+      <div class="category" onclick="filterVendor('Galon')">
+        <span>💧</span>Galon
+      </div>
+
+      <div class="category" onclick="filterVendor('Laundry')">
+        <span>🧺</span>Laundry
+      </div>
+
+      <div class="category" onclick="filterVendor('Cleaning')">
+        <span>🧹</span>Cleaning
+      </div>
+
+      <div class="category" onclick="filterVendor('Gas')">
+        <span>🔥</span>Beli Gas
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Vendor Pilihan</h2>
+    <div class="vendors" id="vendorList"></div>
+  </div>
+
+</section>
+
+<!-- ORDERS -->
+<section id="orders" class="page">
+  <h1>Pesanan Saya</h1>
+  <p style="margin:10px 0 20px">Lihat riwayat pemesanan layanan kamu.</p>
+  <div id="orderList"></div>
+</section>
+
+<!-- CHAT -->
+<section id="chat" class="page">
+  <h1>Chat KosService</h1>
+  <p style="margin:10px 0 20px">Hubungi layanan bantuan kami.</p>
+
+  <div class="chat-box" id="chatBox">
+    <div class="message">
+      Halo! Selamat datang di KosService. Ada yang bisa kami bantu?
+    </div>
+  </div>
+
+  <form onsubmit="sendMessage(event)">
+    <input id="chatInput" placeholder="Tulis pesan..." required class="search">
+    <button class="btn">Kirim</button>
+  </form>
+  <p style="color:#718078;font-size:12px;margin-top:10px">
+    Chat ini masih berupa demo dan belum terhubung ke admin.
+  </p>
+</section>
+
+<!-- PROFILE -->
+<section id="profile" class="page">
+  <h1>Profil Pengguna</h1>
+
+  <form onsubmit="saveProfile(event)">
+    <div class="form-group">
+      <label>Nama Lengkap</label>
+      <input id="name" required>
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input id="email" type="email">
+    </div>
+
+    <div class="form-group">
+      <label>Nomor HP</label>
+      <input id="phone" type="tel">
+    </div>
+
+    <div class="form-group">
+      <label>Alamat Kos</label>
+      <textarea id="address"></textarea>
+    </div>
+
+    <button class="btn">Simpan Profil</button>
+  </form>
+</section>
+
+</div>
+
+<footer>
+  © 2026 KosService. Semua Hak Dilindungi.
+</footer>
+
+<!-- FORM PEMESANAN -->
+<div id="booking" style="
+display:none;
+position:fixed;
+inset:0;
+background:#0009;
+padding:20px;
+overflow:auto;
+z-index:10;
+">
+  <div style="
+  background:white;
+  padding:25px;
+  border-radius:15px;
+  max-width:450px;
+  margin:30px auto;
+  ">
+    <h2>Form Pemesanan</h2>
+
+    <form onsubmit="createOrder(event)">
+      <input type="hidden" id="vendorName">
+
+      <div class="form-group">
+        <label>Nama Pemesan</label>
+        <input id="customerName" required>
+      </div>
+
+      <div class="form-group">
+        <label>Alamat Kos</label>
+        <textarea id="customerAddress" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Tanggal Pesanan</label>
+        <input type="date" id="orderDate" required>
+      </div>
+
+      <div class="form-group">
+        <label>Catatan</label>
+        <textarea id="note"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Pembayaran</label>
+        <select id="payment">
+          <option>COD</option>
+          <option>Transfer</option>
+        </select>
+      </div>
+
+      <button class="btn">Konfirmasi Pesanan</button>
+      <button type="button" class="btn"
+        style="background:#777"
+        onclick="closeBooking()">Batal</button>
+    </form>
+  </div>
+</div>
+
+<script>
+const vendors = [
+  {name:"Laundry Express",category:"Laundry",price:18000,rating:4.8},
+  {name:"Budi Cleaning",category:"Cleaning",price:50000,rating:4.7},
+  {name:"Air Segar",category:"Galon",price:7000,rating:4.9},
+  {name:"Gas Cepat",category:"Gas",price:22000,rating:4.6},
+  {name:"Laundry Kilat",category:"Laundry",price:22000,rating:4.7},
+  {name:"Kos Bersih",category:"Cleaning",price:65000,rating:4.8}
+];
+
+let selectedCategory = "Semua";
+
+let orders = JSON.parse(localStorage.getItem("kosOrders") || "[]");
+
+let profile = JSON.parse(
+  localStorage.getItem("kosProfile") ||
+  '{"name":"Pengguna","email":"","phone":"","address":""}'
+);
+
+function rupiah(value) {
+  return "Rp" + value.toLocaleString("id-ID");
+}
+
+function showPage(page) {
+  document.querySelectorAll(".page").forEach(el => {
+    el.classList.remove("active");
+  });
+
+  document.getElementById(page).classList.add("active");
+
+  if(page === "orders") renderOrders();
+  if(page === "profile") loadProfile();
+}
+
+function renderVendors() {
+  const search = document.getElementById("search").value.toLowerCase();
+
+  const filtered = vendors.filter(v => {
+    const matchesCategory =
+      selectedCategory === "Semua" ||
+      v.category === selectedCategory;
+
+    const matchesSearch =
+      v.name.toLowerCase().includes(search) ||
+      v.category.toLowerCase().includes(search);
+
+    return matchesCategory && matchesSearch;
+  });
+
+  document.getElementById("vendorList").innerHTML =
+    filtered.length ? filtered.map((v,i) => `
+      <div class="card">
+        <h3>${v.name}</h3>
+        <p>${v.category}</p>
+        <p>⭐ ${v.rating}</p>
+        <p class="price">Mulai ${rupiah(v.price)}</p>
+        <button class="btn" onclick="openBooking('${v.name}',${v.price})">
+          Pesan Sekarang
+        </button>
+      </div>
+    `).join("") :
+    "<p>Vendor tidak ditemukan.</p>";
+}
+
+function filterVendor(category) {
+  selectedCategory = category;
+  document.getElementById("search").value = "";
+  renderVendors();
+  document.getElementById("vendorList").scrollIntoView({behavior:"smooth"});
+}
+
+function openBooking(name,price) {
+  document.getElementById("vendorName").value = name;
+  document.getElementById("customerName").value = profile.name === "Pengguna" ? "" : profile.name;
+  document.getElementById("customerAddress").value = profile.address;
+  document.getElementById("orderDate").min = new Date().toISOString().slice(0,10);
+  document.getElementById("orderDate").value = new Date().toISOString().slice(0,10);
+  document.getElementById("booking").style.display = "block";
+}
+
+function closeBooking() {
+  document.getElementById("booking").style.display = "none";
+}
+
+function createOrder(event) {
+  event.preventDefault();
+
+  const order = {
+    vendor:document.getElementById("vendorName").value,
+    name:document.getElementById("customerName").value,
+    address:document.getElementById("customerAddress").value,
+    date:document.getElementById("orderDate").value,
+    note:document.getElementById("note").value,
+    payment:document.getElementById("payment").value,
+    status:"Menunggu Konfirmasi"
+  };
+
+  orders.unshift(order);
+
+  localStorage.setItem("kosOrders",JSON.stringify(orders));
+
+  closeBooking();
+  alert("Pesanan berhasil dibuat!");
+  showPage("orders");
+}
+
+function renderOrders() {
+  document.getElementById("orderList").innerHTML =
+    orders.length ? orders.map(o => `
+      <div class="order">
+        <h3>${o.vendor}</h3>
+        <p>Nama: ${o.name}</p>
+        <p>Alamat: ${o.address}</p>
+        <p>Tanggal: ${o.date}</p>
+        <p>Pembayaran: ${o.payment}</p>
+        <p>Status: <b>${o.status}</b></p>
+      </div>
+    `).join("") :
+    "<p>Belum ada pesanan.</p>";
+}
+
+function saveProfile(event) {
+  event.preventDefault();
+
+  profile = {
+    name:document.getElementById("name").value,
+    email:document.getElementById("email").value,
+    phone:document.getElementById("phone").value,
+    address:document.getElementById("address").value
+  };
+
+  localStorage.setItem("kosProfile",JSON.stringify(profile));
+
+  document.getElementById("welcomeName").textContent = profile.name;
+
+  alert("Profil berhasil disimpan!");
+}
+
+function loadProfile() {
+  document.getElementById("name").value = profile.name;
+  document.getElementById("email").value = profile.email;
+  document.getElementById("phone").value = profile.phone;
+  document.getElementById("address").value = profile.address;
+}
+
+function sendMessage(event) {
+  event.preventDefault();
+
+  const input = document.getElementById("chatInput");
+  const box = document.getElementById("chatBox");
+
+  const message = document.createElement("div");
+  message.className = "message mine";
+  message.textContent = input.value;
+
+  box.appendChild(message);
+  input.value = "";
+
+  const reply = document.createElement("div");
+  reply.className = "message";
+  reply.textContent =
+    "Terima kasih sudah menghubungi KosService. Chat ini masih demo.";
+
+  box.appendChild(reply);
+}
+
+document.getElementById("welcomeName").textContent = profile.name;
+
+renderVendors();
+</script>
+
+</body>
+  </html>
+  
